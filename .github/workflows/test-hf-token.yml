@@ -1,0 +1,21 @@
+name: Test HF Token
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Test Hugging Face Token
+        run: |
+          echo "Testing Hugging Face Token..."
+          if [ -z "${{ secrets.HF_TOKEN }}" ]; then
+            echo "❌ HF_TOKEN is missing!"
+            exit 1
+          else
+            echo "✅ HF_TOKEN is available."
+          fi
