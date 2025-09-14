@@ -1,0 +1,23 @@
+name: Test HF_TOKEN secret
+
+on:
+  push:
+    branches:
+      - main   # إذا الفرع عندك مو main غيّره هنا
+
+jobs:
+  check-secret:
+    runs-on: ubuntu-latest
+    env:
+      HF_TOKEN: ${{ secrets.HF_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Verify HF_TOKEN is present
+        run: |
+          if [ -z "${HF_TOKEN}" ]; then
+            echo "HF_TOKEN missing!"
+            exit 1
+          else
+            echo "HF_TOKEN is set!"
+          fi
