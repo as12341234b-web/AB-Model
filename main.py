@@ -15,6 +15,8 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(me
 # ------------------ إعدادات من البيئة ----------
 TOKEN = os.getenv("DISCORD_TOKEN")  # لازم تحطه في Render
 ROOM_ID = int(os.getenv("ROOM_ID", "1417061905423667301"))  # روم الأخبار
+OWNER_ID = int(os.getenv("OWNER_ID", "0"))  # معرف مالك البوت
+
 # ⏰ التوقيت مضبوط على 12:00 ليل الرياض
 SA_TZ = pytz.timezone("Asia/Riyadh")
 SEND_HOUR_LOCAL = 0
@@ -206,8 +208,9 @@ async def schedule_checker():
 
 # ------------------ أوامر يدوية ----------
 @bot.command()
-@commands.is_owner()
 async def publish_now(ctx):
+    if ctx.author.id != OWNER_ID:
+        return await ctx.send("❌ ما عندك صلاحية تستخدم هذا الأمر.")
     await ctx.send("⏳ نشر الأخبار يدويًا...")
     await publish_news_batch()
     await ctx.send("✅ انتهى.")
